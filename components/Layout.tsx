@@ -1,14 +1,12 @@
 import React from 'react';
-import clsx from 'clsx';
 import Link from 'next/link';
 import { createStyles, makeStyles, Theme, MuiThemeProvider } from '@material-ui/core/styles';
-import { AppBar, Toolbar, IconButton, Typography, Button, Container } from '@material-ui/core';
-import { SwipeableDrawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Container } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import HomeIcon from '@material-ui/icons/Home';
 import MyTheme from './MyTheme';
 import HeadTags, { siteTitle } from './HeadTags';
 import Footer from './Footer';
+import SideMenu from './SideMenu';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,11 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    sideMenu: {
-      width: 250,
-    },
     title: {
       flexGrow: 1,
+      letterSpacing: '0.03rem',
     },
     content: {
       flexGrow: 1,
@@ -36,48 +32,17 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function Layout({
-  children,
-  home
-}: {
+export default function Layout({ children, home }: {
+  // props の interface の役割
   children: React.ReactNode
   home?: boolean
 }) {
   const classes = useStyles();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
 
-  const toggleDrawer = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent,
-  ) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-
-    setIsOpen(open);
-  };
-
-  const menuList = () => (
-    <div
-      className={clsx(classes.sideMenu)}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <Link href='/'>
-          <ListItem button>
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText primary='Home' />
-          </ListItem>
-        </Link>
-      </List>
-    </div>
-  );
+  const toggleOpen = () => {
+    setSideMenuOpen(!sideMenuOpen);
+  }
 
   return (
     <MuiThemeProvider theme={MyTheme}>
@@ -85,7 +50,7 @@ export default function Layout({
       <header className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleOpen}>
               <MenuIcon />
             </IconButton>
             <Link href='/'>
@@ -93,9 +58,7 @@ export default function Layout({
             </Link>
           </Toolbar>
         </AppBar>
-        <SwipeableDrawer open={isOpen} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-          {menuList()}
-        </SwipeableDrawer>
+        <SideMenu isOpen={sideMenuOpen} stateHandler={setSideMenuOpen} />
       </header>
       <main className={classes.content}>
         <Container maxWidth="lg" className={classes.container}>
