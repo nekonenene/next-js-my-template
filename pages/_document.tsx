@@ -4,6 +4,18 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
 export default class MyDocument extends Document {
+  setGoogleTags() {
+    return {
+      __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '${process.env.FIREBASE_MEASUREMENT_ID}');
+      `
+    };
+  }
+
   render() {
     return (
       <Html lang="ja">
@@ -11,6 +23,8 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.FIREBASE_MEASUREMENT_ID}`} />
+          <script dangerouslySetInnerHTML={this.setGoogleTags()} />
         </body>
       </Html>
     );
