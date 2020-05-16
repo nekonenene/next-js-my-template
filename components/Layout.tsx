@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { createStyles, makeStyles, Theme, MuiThemeProvider } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, Typography, Container } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import constants from '../lib/constants';
 import MyTheme from './MyTheme';
-import HeadTags, { siteTitle } from './HeadTags';
 import Footer from './Footer';
 import SideMenu from './SideMenu';
 
@@ -46,7 +46,6 @@ export default function Layout({ children, home }: {
 
   return (
     <MuiThemeProvider theme={MyTheme}>
-      <HeadTags />
       <header className={classes.root}>
         <AppBar position="static">
           <Toolbar>
@@ -54,7 +53,7 @@ export default function Layout({ children, home }: {
               <MenuIcon />
             </IconButton>
             <Link href='/'>
-              <Typography variant="h6" className={classes.title}>{siteTitle}</Typography>
+              <Typography variant="h6" className={classes.title}>{constants.siteTitle}</Typography>
             </Link>
           </Toolbar>
         </AppBar>

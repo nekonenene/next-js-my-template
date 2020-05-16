@@ -1,12 +1,12 @@
 import Head from 'next/head';
+import constants from '../lib/constants';
 import Layout from '../components/Layout';
-import { siteTitle } from '../components/HeadTags';
 
 function HomePage() {
   return (
     <Layout home>
       <Head>
-        <title>{siteTitle}</title>
+        <title>{constants.siteTitle} | トップページ</title>
       </Head>
       <div>Welcome to Next.js!</div>
     </Layout>
